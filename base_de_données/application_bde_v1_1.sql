@@ -7,15 +7,6 @@ CREATE DATABASE IF NOT EXISTS `applicationbde`;
 
 USE `applicationbde`;
 
-DROP TABLE IF EXISTS `bde_badge`;
-CREATE TABLE IF NOT EXISTS `bde_badge` (
-  `b_id`          int(11)       NOT NULL    AUTO_INCREMENT,
-  `b_name`        varchar(255)  NOT NULL,
-  `b_description` text          NOT NULL,
-  `b_image`       blob          NOT NULL,
-  PRIMARY KEY (`b_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 DROP TABLE IF EXISTS `bde_contact`;
 CREATE TABLE IF NOT EXISTS `bde_contact` (
   `c_id`        int(11)      NOT NULL   AUTO_INCREMENT,
@@ -25,6 +16,15 @@ CREATE TABLE IF NOT EXISTS `bde_contact` (
   `c_phone`     varchar(10)  DEFAULT NULL,
   `c_role`      varchar(255) NOT NULL,
   PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `bde_badge`;
+CREATE TABLE IF NOT EXISTS `bde_badge` (
+  `b_id`          int(11)       NOT NULL    AUTO_INCREMENT,
+  `b_name`        varchar(255)  NOT NULL,
+  `b_description` text          NOT NULL,
+  `b_image`       blob          NOT NULL,
+  PRIMARY KEY (`b_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `bde_type`;
@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `bde_news` (
   `n_date`              datetime      NOT NULL,
   `n_date_publication`  datetime      NOT NULL,
   `n_image`             blob          NOT NULL,
+  `n_type`              varchar(255)  NOT NULL,
   `n_fk_user_id`        int(11)       NOT NULL,
   PRIMARY KEY (`n_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -62,32 +63,32 @@ CREATE TABLE IF NOT EXISTS `bde_news` (
 DROP TABLE IF EXISTS `bde_poll`;
 CREATE TABLE IF NOT EXISTS `bde_poll` (
 	`po_fk_news_id`	int(11)		NOT NULL,
-    PRIMARY KEY (`po_fk_news_id`)
+  PRIMARY KEY (`po_fk_news_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `bde_project`;
 CREATE TABLE IF NOT EXISTS `bde_project` (
 	`pr_fk_news_id`	int(11)		NOT NULL,
-    PRIMARY KEY (`pr_fk_news_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-DROP TABLE IF EXISTS `bde_response`;
-CREATE TABLE IF NOT EXISTS `bde_response` (
-	`r_id`			int(11)			NOT NULL	AUTO_INCREMENT,
-    `r_label`		varchar(255)	NOT NULL,
-    `r_fk_poll_id`	int(11)			NOT NULL,
-    PRIMARY KEY (`r_id`)
+  PRIMARY KEY (`pr_fk_news_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `bde_event`;
 CREATE TABLE IF NOT EXISTS `bde_event` (
-	`e_id`			int(11)			NOT NULL	AUTO_INCREMENT,
-    `e_place`		varchar(255)	NOT NULL,
-    `e_type`		varchar(255)	NOT NULL,
-    `e_fk_user_id`	int(11)			NOT NULL,
-    `e_fk_poll_id`	int(11)			NOT NULL,
-    `e_fk_news_id`	int(11)			NOT NULL,
-    PRIMARY KEY (`e_id`)
+  `e_id`			    int(11)			  NOT NULL	AUTO_INCREMENT,
+  `e_place`		    varchar(255)	NOT NULL,
+  `e_type`		    varchar(255)	NOT NULL,
+  `e_fk_user_id`	int(11)			  NOT NULL,
+  `e_fk_poll_id`	int(11)			  NOT NULL,
+  `e_fk_news_id`	int(11)			  NOT NULL,
+  PRIMARY KEY (`e_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `bde_response`;
+CREATE TABLE IF NOT EXISTS `bde_response` (
+	`r_id`			    int(11)			  NOT NULL	AUTO_INCREMENT,
+  `r_label`		    varchar(255)	NOT NULL,
+  `r_fk_poll_id`	int(11)			  NOT NULL,
+  PRIMARY KEY (`r_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `bde_badge_user`;
@@ -108,25 +109,25 @@ CREATE TABLE IF NOT EXISTS `bde_news_user` (
 
 DROP TABLE IF EXISTS `bde_project_user`;
 CREATE TABLE IF NOT EXISTS `bde_project_user` (
-	`pu_fk_user_id`		int(11)		NOT NULL,
-    `pu_fk_project_id`	int(11)		NOT NULL,
-    PRIMARY KEY (`pu_fk_user_id`, `pu_fk_project_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-DROP TABLE IF EXISTS `bde_response_user`;
-CREATE TABLE IF NOT EXISTS `bde_response_user` (
-	`ru_fk_user_id`		int(11)		NOT NULL,
-    `ru_fk_response_id`	int(11)		NOT NULL,
-    PRIMARY KEY (`ru_fk_user_id`, `ru_fk_response_id`)
+	`pu_fk_user_id`		  int(11)		NOT NULL,
+  `pu_fk_project_id`	int(11)		NOT NULL,
+  PRIMARY KEY (`pu_fk_user_id`, `pu_fk_project_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `bde_event_user`;
 CREATE TABLE IF NOT EXISTS `bde_event_user` (
-	`eu_fk_user_id`		int(11)		NOT NULL,
-    `eu_fk_event_id`	int(11)		NOT NULL,
-    `eu_nb_persons`		int(11)		NOT NULL,
-    `eu_participe`		tinyint(1)	NOT NULL,
-    PRIMARY KEY (`eu_fk_user_id`, `eu_fk_event_id`)
+	`eu_fk_user_id`		int(11)		  NOT NULL,
+  `eu_fk_event_id`	int(11)		  NOT NULL,
+  `eu_nb_persons`		int(11)		  NOT NULL,
+  `eu_participe`		tinyint(1)	NOT NULL,
+  PRIMARY KEY (`eu_fk_user_id`, `eu_fk_event_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `bde_response_user`;
+CREATE TABLE IF NOT EXISTS `bde_response_user` (
+	`ru_fk_user_id`		  int(11)		NOT NULL,
+  `ru_fk_response_id`	int(11)		NOT NULL,
+  PRIMARY KEY (`ru_fk_user_id`, `ru_fk_response_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `bde_badge_user` ADD FOREIGN KEY (`bu_fk_user_id`) REFERENCES `bde_user`(`u_id`);
